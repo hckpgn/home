@@ -1,7 +1,7 @@
-'use client'
+'use client';
 
-import { useState, useEffect } from 'react'
-import Image from 'next/image'
+import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 const quotes = [
   "Preparing to do the thing isn't doing the thing.",
@@ -15,67 +15,66 @@ const quotes = [
   "Reading about how to do the thing isn't doing the thing. Reading about how other people did the thing isn't doing the thing. Reading this essay isn't doing the thing.",
   "The only thing that is doing the thing is doing the thing.",
   "~ strangestloop"
-]
+];
 
 export function Homepage() {
-  const [nameText, setNameText] = useState('')
-  const fullNameText = 'hckpgn'
-  const [showCursor, setShowCursor] = useState(true)
-  const [glitch, setGlitch] = useState(false)
-  const [currentQuote, setCurrentQuote] = useState('')
-  const [fullQuote, setFullQuote] = useState(quotes[0]);
-  const [easterEgg, setEasterEgg] = useState(0)
+  const [nameText, setNameText] = useState('');
+  const fullNameText = 'hckpgn';
+  const [showCursor, setShowCursor] = useState(true);
+  const [glitch, setGlitch] = useState(false);
+  const [currentQuote, setCurrentQuote] = useState('');
+  const [easterEgg, setEasterEgg] = useState(0);
 
   useEffect(() => {
-    let nameIndex = 0
+    let nameIndex = 0;
     const nameIntervalId = setInterval(() => {
-      setNameText(fullNameText.slice(0, nameIndex))
-      nameIndex++
+      setNameText(fullNameText.slice(0, nameIndex));
+      nameIndex++;
       if (nameIndex > fullNameText.length) {
-        clearInterval(nameIntervalId)
+        clearInterval(nameIntervalId);
       }
-    }, 200)
+    }, 200);
 
     const cursorIntervalId = setInterval(() => {
-      setShowCursor((prev) => !prev)
-    }, 500)
+      setShowCursor((prev) => !prev);
+    }, 500);
 
     const glitchIntervalId = setInterval(() => {
-      setGlitch(true)
-      setTimeout(() => setGlitch(false), 200)
-    }, 2000)
+      setGlitch(true);
+      setTimeout(() => setGlitch(false), 200);
+    }, 2000);
 
     const changeQuote = () => {
-      const newQuote = quotes[Math.floor(Math.random() * quotes.length)]
-      setFullQuote(newQuote)
-      setCurrentQuote('')
-      let quoteIndex = 0
+      const newQuote = quotes[Math.floor(Math.random() * quotes.length)];
+      setCurrentQuote(''); // Reset the currentQuote to trigger animation
+      let quoteIndex = 0;
+      
       const quoteIntervalId = setInterval(() => {
-        setCurrentQuote(newQuote.slice(0, quoteIndex))
-        quoteIndex++
+        setCurrentQuote((prev) => newQuote.slice(0, quoteIndex));
+        quoteIndex++;
         if (quoteIndex > newQuote.length) {
-          clearInterval(quoteIntervalId)
+          clearInterval(quoteIntervalId);
         }
-      }, 50)
-    }
+      }, 50);
+    };
 
-    changeQuote()
-    const quoteChangeIntervalId = setInterval(changeQuote, 12000)
+    changeQuote();
+    const quoteChangeIntervalId = setInterval(changeQuote, 12000);
 
     return () => {
-      clearInterval(nameIntervalId)
-      clearInterval(cursorIntervalId)
-      clearInterval(glitchIntervalId)
-      clearInterval(quoteChangeIntervalId)
-    }
-  }, [])
+      clearInterval(nameIntervalId);
+      clearInterval(cursorIntervalId);
+      clearInterval(glitchIntervalId);
+      clearInterval(quoteChangeIntervalId);
+    };
+  }, []);
 
   const handleEasterEgg = () => {
-    setEasterEgg((prev) => (prev + 1) % 4)
+    setEasterEgg((prev) => (prev + 1) % 4);
     if (easterEgg === 3) {
-      alert("01111001 01101111 01110101 01110110 01100101 00100000 01100100 01101001 01110011 01100011 01101111 01110110 01100101 01110010 01100101 01100100 00100000 01110100 01101000 01100101 00100000 01110011 01100101 01100011 01110010 01100101 01110100 00100000 01100011 01101111 01100100 01100101 00111010 00100000 00110100")
+      alert("01111001 01101111 01110101 01110110 01100101 00100000 01100100 01101001 01110011 01100011 01101111 01110110 01100101 01110010 01100101 01100100 00100000 01110100 01101000 01100101 00100000 01110011 01100101 01100011 01110010 01100101 01110100 00100000 01100011 01101111 01100100 01100101 00111010 00100000 00110100");
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-black text-green-500 flex flex-col items-center justify-center p-4 overflow-hidden relative">
@@ -123,5 +122,5 @@ export function Homepage() {
         v.1.33.7
       </div>
     </div>
-  )
+  );
 }
