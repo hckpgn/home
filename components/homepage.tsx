@@ -23,7 +23,7 @@ export function Homepage() {
   const [showCursor, setShowCursor] = useState(true)
   const [glitch, setGlitch] = useState(false)
   const [currentQuote, setCurrentQuote] = useState('')
-  const [fullQuote, setFullQuote] = useState(quotes[0])
+  const [fullQuote, setFullQuote] = useState(quotes[0]);
   const [easterEgg, setEasterEgg] = useState(0)
 
   useEffect(() => {
