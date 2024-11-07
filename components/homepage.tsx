@@ -23,10 +23,12 @@ export function Homepage() {
   const fullNameText = 'hckpgn';
   const [showCursor, setShowCursor] = useState(true);
   const [glitch, setGlitch] = useState(false);
-  const [currentQuote, setCurrentQuote] = useState('');
+  const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
+  const [currentQuotePart, setCurrentQuotePart] = useState('');
   const [easterEgg, setEasterEgg] = useState(0);
 
   useEffect(() => {
+    // Typing effect for the name
     let nameIndex = 0;
     const nameIntervalId = setInterval(() => {
       setNameText(fullNameText.slice(0, nameIndex));
@@ -36,39 +38,48 @@ export function Homepage() {
       }
     }, 200);
 
+    // Cursor blink effect
     const cursorIntervalId = setInterval(() => {
       setShowCursor((prev) => !prev);
     }, 500);
 
+    // Glitch effect
     const glitchIntervalId = setInterval(() => {
       setGlitch(true);
       setTimeout(() => setGlitch(false), 200);
     }, 2000);
 
-    const changeQuote = () => {
-      const newQuote = quotes[Math.floor(Math.random() * quotes.length)];
-      setCurrentQuote(''); // Reset the currentQuote to trigger animation
-      let quoteIndex = 0;
-      
-      const quoteIntervalId = setInterval(() => {
-        setCurrentQuote((prev) => newQuote.slice(0, quoteIndex));
-        quoteIndex++;
-        if (quoteIndex > newQuote.length) {
-          clearInterval(quoteIntervalId);
-        }
-      }, 50);
-    };
-
-    changeQuote();
-    const quoteChangeIntervalId = setInterval(changeQuote, 12000);
-
     return () => {
       clearInterval(nameIntervalId);
       clearInterval(cursorIntervalId);
       clearInterval(glitchIntervalId);
-      clearInterval(quoteChangeIntervalId);
     };
   }, []);
+
+  useEffect(() => {
+    // Display each quote in sequence from top to bottom
+    const displayQuotePart = () => {
+      setCurrentQuotePart(''); // Reset the quote part for typing effect
+      const quote = quotes[currentQuoteIndex];
+      let charIndex = 0;
+      
+      const quoteTypingInterval = setInterval(() => {
+        setCurrentQuotePart((prev) => quote.slice(0, charIndex));
+        charIndex++;
+        
+        if (charIndex > quote.length) {
+          clearInterval(quoteTypingInterval);
+          
+          // Move to the next quote in sequence after a short delay
+          setTimeout(() => {
+            setCurrentQuoteIndex((prevIndex) => (prevIndex + 1) % quotes.length);
+          }, 3000); // 3-second pause before next quote
+        }
+      }, 50); // Typing speed
+    };
+
+    displayQuotePart();
+  }, [currentQuoteIndex]);
 
   const handleEasterEgg = () => {
     setEasterEgg((prev) => (prev + 1) % 4);
@@ -83,7 +94,7 @@ export function Homepage() {
       <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
       <div className="w-40 h-40 mb-12 relative animate-float" onClick={handleEasterEgg}>
         <Image
-          src="/pfp.png" // Ensure this image is correctly placed in the public directory
+          src="/pfp.png" 
           alt="hckpgn logo"
           layout="fill"
           objectFit="contain"
@@ -115,7 +126,7 @@ export function Homepage() {
       </div>
       <div className="mt-8 mb-12 w-full max-w-3xl text-center h-24">
         <p className="text-xl font-mono leading-relaxed">
-          {currentQuote}
+          {currentQuotePart}
           <span className={`${showCursor ? 'opacity-100' : 'opacity-0'} transition-opacity duration-100`}>_</span>
         </p>
       </div>
