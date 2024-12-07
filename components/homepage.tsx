@@ -99,9 +99,9 @@ export function Homepage() {
       </h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl relative mb-12">
         {[
+          { word: 'blog', link: 'https://blog.hckpgn.de' },
           { word: 'discord', link: 'https://discord.com/users/549672985494159360' },
-          { word: 'code', link: 'https://github.com/hckpgn' },
-          { word: 'music', link: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1' }
+          { word: 'code', link: 'https://github.com/hckpgn' }
         ].map(({ word, link }) => (
           <button
             key={word}
